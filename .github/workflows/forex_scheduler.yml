@@ -7,12 +7,13 @@ on:
     - cron: '30 10 * * *'
   workflow_dispatch: # Allows manual trigger
 
+# Grant write permissions to push files back to the repository
+permissions:
+  contents: write
+
 jobs:
   archive:
     runs-on: ubuntu-latest
-    # This env variable addresses the Node.js deprecation warning proactively
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       
     steps:
     - name: Checkout Repository
@@ -21,7 +22,6 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        # FIXED: Changed 'python-node-version' to the correct standard input 'python-version'
         python-version: '3.10'
 
     - name: Install Dependencies
@@ -35,6 +35,10 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add .
+        # Commit only if files changed to prevent empty commit errors
+        git diff-index --quiet HEAD || git commit -m "Automated Archive: $(date)"
+        git push        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add .
         git diff-index --quiet HEAD || git commit -m "Automated Archive: $(date)"
         git push
