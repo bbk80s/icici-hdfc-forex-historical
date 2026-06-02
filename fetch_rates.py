@@ -1,11 +1,11 @@
 import os
 import re
+import sys
 import requests
 from datetime import datetime
 import pytz
 from bs4 import BeautifulSoup
 
-# Corrected Domain URLs
 ICICI_URL = "https://www.icicibank.com/corporate/global-markets/forex/forex-card-rate"
 HDFC_BASE_URL = "https://www.hdfcbank.com/personal/resources/rates"
 
@@ -18,8 +18,7 @@ def get_ist_time_and_window():
     now = datetime.now(ist)
     date_str = now.strftime("%Y-%m-%d")
     
-    # Check current hour to assign the file name to the correct shift window
-    # If GitHub runs the 10:30 AM job up to 2 hours late, it still records as 10 am.
+    # If GitHub runs the 10:30 AM job up to 3 hours late, it still maps back to 10 am.
     if 8 <= now.hour < 14:
         time_str = "10 am"
     else:
@@ -35,6 +34,89 @@ def get_browser_headers():
         "Connection": "keep-alive"
     }
 
+def archive_icici(date_str, time_str):
+    try:
+        response = requests.get(ICICI_URL, headers=get_browser_headers(), timeout=20)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        content = f"# ICICI Forex Rates - {date_str} {time_str}\n\n"
+        
+        tables = soup.find_all('table')
+        if tables:
+            for i, table in enumerate(tables):
+                content += f"### Rate Table {i+1}\n"
+                for row in table.find_all('tr'):
+                    cells = [cell.get_text(strip=True) for cell in row.find_all(['td', 'th'])]
+                    if cells:
+                        content += "| " + " | ".join(cells) + " |\n"
+                content += "\n"
+        else:
+            content += soup.get_text(separator="\n", strip=True)
+
+        os.makedirs(f"icici/{date_str}", exist_ok=True)
+        filename = f"icici/{date_str}/rates_{time_str.replace(' ', '_')}.md"
+        
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"Successfully archived ICICI rates to {filename}")
+        return True
+    except Exception as e:
+        print(f"Error archiving ICICI: {e}")
+        return False
+
+def archive_hdfc(date_str, time_str):
+    try:
+        session = requests.Session()
+        landing_response = session.get(HDFC_BASE_URL, headers=get_browser_headers(), timeout=20)
+        landing_response.raise_for_status()
+        
+        soup = BeautifulSoup(landing_response.text, 'html.parser')
+        pdf_url = None
+        
+        # Parse layout targets looking for the changing dynamic content-stream IDs
+        for link in soup.find_all('a', href=True):
+            href = link['href']
+            if "contentstream-id" in href or ("forex" in href.lower() and href.endswith('.pdf')):
+                pdf_url = href
+                if not pdf_url.startswith("http"):
+                    pdf_url = "https://www.hdfcbank.com" + pdf_url
+                break
+        
+        if not pdf_url:
+            match = re.search(r'(https://www\.hdfcbank\.com/content/api/contentstream-id/[^\s"\']+)', landing_response.text)
+            if match:
+                pdf_url = match.group(1)
+                
+        if not pdf_url:
+            raise Exception("Could not discover HDFC's dynamic Forex PDF link on index resources.")
+            
+        pdf_response = session.get(pdf_url, headers=get_browser_headers(), timeout=25)
+        pdf_response.raise_for_status()
+        
+        os.makedirs(f"hdfc/{date_str}", exist_ok=True)
+        filename = f"hdfc/{date_str}/rates_{time_str.replace(' ', '_')}.pdf"
+        
+        with open(filename, "wb") as f:
+            f.write(pdf_response.content)
+        print(f"Successfully archived HDFC rates to {filename}")
+        return True
+        
+    except Exception as e:
+        print(f"Error archiving HDFC: {e}")
+        return False
+
+if __name__ == "__main__":
+    date_str, time_str = get_ist_time_and_window()
+    print(f"Starting Forex Archiver Execution for window: {date_str} [{time_str}]")
+    
+    icici_success = archive_icici(date_str, time_str)
+    hdfc_success = archive_hdfc(date_str, time_str)
+    
+    # If both sources fail entirely, force exit 1 so GitHub flags the execution log
+    if not icici_success and not hdfc_success:
+        print("Fatal Error: Both banking endpoints failed to fetch data completely.")
+        sys.exit(1)
 def archive_icici(date_str, time_str):
     try:
         response = requests.get(ICICI_URL, headers=get_browser_headers(), timeout=15)
