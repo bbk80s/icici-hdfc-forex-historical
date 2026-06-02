@@ -7,7 +7,7 @@ on:
     - cron: '30 10 * * *'
   workflow_dispatch: # Allows manual trigger
 
-# Grant write permissions to push files back to the repository
+# Explicitly grant top-level permission to push file updates
 permissions:
   contents: write
 
@@ -18,6 +18,9 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        # Ensures git fetches complete histories rather than a shallow clone
+        fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -35,10 +38,15 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        
+        # Ensure we point directly to the current tracking branch
+        git checkout -B ${GITHUB_REF##*/}
+        
         git add .
-        # Commit only if files changed to prevent empty commit errors
-        git diff-index --quiet HEAD || git commit -m "Automated Archive: $(date)"
-        git push        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add .
-        git diff-index --quiet HEAD || git commit -m "Automated Archive: $(date)"
-        git push
+        # Only commit if actual differences are staging to prevent exit code 1 on clean runs
+        if ! git diff-index --quiet HEAD; then
+          git commit -m "Automated Archive: $(date)"
+          git push origin ${GITHUB_REF##*/}
+        else
+          echo "No historical rate changes detected to archive today."
+        fi
