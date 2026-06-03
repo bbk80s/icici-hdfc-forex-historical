@@ -39,14 +39,21 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         
-        # Ensure we point directly to the current tracking branch
-        git checkout -B ${GITHUB_REF##*/}
+        # 1. Fetch latest changes from remote just in case another runner pushed
+        git fetch origin main
         
+        # 2. Stage changes
         git add .
-        # Only commit if actual differences are staging to prevent exit code 1 on clean runs
+        
+        # 3. Only commit if there are actual new files/changes
         if ! git diff-index --quiet HEAD; then
-          git commit -m "Automated Archive: $(date)"
-          git push origin ${GITHUB_REF##*/}
+          git commit -m "Automated Archive: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          
+          # 4. Pull any incoming remote changes with rebase to prevent non-fast-forward errors
+          git pull origin main --rebase
+          
+          # 5. Push safely
+          git push origin main
         else
           echo "No historical rate changes detected to archive today."
         fi
