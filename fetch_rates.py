@@ -7,7 +7,7 @@ import pytz
 from bs4 import BeautifulSoup
 
 ICICI_URL = "https://www.icicibank.com/corporate/global-markets/forex/forex-card-rate"
-HDFC_BASE_URL = "https://www.hdfcbank.com/personal/resources/rates"
+HDFC_BASE_URL = "https://www.hdfc.bank.in/content/dam/hdfcbankpws/in/en/personal-banking/discover-products/interest-rates/hdfc-bank-treasury-forex-card-rates.pdf"
 
 def get_ist_time_and_window():
     """
