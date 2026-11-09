@@ -1,0 +1,36 @@
+# ICICI Forex Rates - 2026-11-10 04 pm
+
+### Rate Table 1
+|  |
+| Foreign Exchange & Currency Rates |
+| Last Updated on: 09-11-2026| 01:12:21 PM |
+
+### Rate Table 2
+| Currency | Bank Buying Rate | Bank Selling Rate |
+| TT Buying rate | Bills Buying rate | Currency notes | Forex Prepaid card | TT Selling Rate | Bills Selling rate | Currency notes | Forex Prepaid card | Demand Draft |
+| United States Dollar (USD) | 92.44 | 92.44 | 92.44 | 92.44 | 95.37 | 95.37 | 95.37 | 95.37 | 95.7 |
+| Euro (EUR) | 102.77 | 102.77 | 102.77 | 102.77 | 107.25 | 107.25 | 107.25 | 107.25 | 107.25 |
+| Great Britain Pound (GBP) | 122.71 | 122.71 | 122.83 | 122.96 | 129.09 | 129.09 | 128.96 | 128.4 | 128.34 |
+| Australian Dollar (AUD) | 63.19 | 63.19 | 62.45 | 63.06 | 67.03 | 67.03 | 67.03 | 66.41 | 66.42 |
+| Canadian Dollar (CAD) | 65.0 | 65.0 | 65.0 | 65.0 | 68.38 | 68.38 | 68.38 | 68.38 | 68.42 |
+| Singapore Dollar (SGD) | 72.12 | 72.12 | 71.21 | 71.79 | 74.78 | 74.78 | 75.66 | 75.07 | 75.18 |
+| Japanese Yen (JPY) | 57.84 | 57.84 | 56.77 | 57.84 | 61.28 | 61.28 | 62.17 | 60.42 |  |
+| U.A.E Dirham (AED) | 24.95 | 24.95 | 24.95 | 24.95 | 26.25 | 26.25 | 26.25 | 26.25 |  |
+| Swiss Franc (CHF) | 112.41 | 112.41 | 112.41 | 112.41 | 117.33 | 117.33 | 117.33 | 117.33 |  |
+| Saudi Riyal (SAR) | 24.29 | 24.29 | 24.12 | 24.2 | 25.82 | 25.82 | 25.98 | 25.9 |  |
+| Qatari Riyal(QAR) | 25.0 | 25.0 | 22.73 |  | 26.78 | 26.78 | 27.8 |  |  |
+| Swedish Kronor (SEK) | 9.21 | 9.21 |  | 9.21 | 9.92 | 9.92 |  | 9.88 |  |
+| Danish Kroner(DKK) | 13.54 | 13.54 |  |  | 14.52 | 14.52 |  |  |  |
+| Norwegian Kroner(NOK) | 9.58 | 9.58 |  |  | 10.35 | 10.35 |  |  |  |
+| New Zealand Dollar(NZD) | 51.37 | 51.37 |  | 50.76 | 54.22 | 54.22 |  | 54.54 |  |
+| Hong Kong Dollar(HKD) | 11.64 | 11.64 | 11.27 | 11.6 | 12.34 | 12.34 | 12.71 | 12.38 |  |
+| Kuwaiti Dinar(KWD) | 291.15 | 291.15 | 277.43 |  | 317.37 | 317.37 | 323.16 |  |  |
+| Thai Baht(THB) | 2.71 | 2.71 | 2.62 | 2.71 | 2.89 | 2.89 | 2.99 | 2.89 |  |
+| South African Rand(ZAR) | 5.44 | 5.44 |  | 5.44 | 5.91 | 5.91 |  | 5.94 |  |
+| Omani Riyal (OMR) | 237.17 | 237.17 |  |  | 251.75 | 251.75 |  |  |  |
+| Korean Won (KRW) | 0.0666 | 0.0666 |  |  | 0.0729 | 0.0729 |  |  |  |
+| Chinese Yuan (CNH) | 13.45 | 13.45 |  |  | 14.73 | 14.73 |  |  |  |
+| Polish Zloty (PLN) | 23.02 | 23.02 |  |  | 24.73 | 24.73 |  |  |  |
+| Bahraini Dinar (BHD) | 241.33 | 241.33 |  |  | 257.13 | 257.13 |  |  |  |
+| Malaysian Ringgit (MYR) | 22.1 | 22.1 |  |  | 24.23 | 24.23 |  |  |  |
+
